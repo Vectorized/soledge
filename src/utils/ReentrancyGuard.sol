@@ -4,8 +4,8 @@ pragma solidity ^0.8.24;
 /// @notice Reentrancy guard mixin.
 /// @author Soledge (https://github.com/vectorized/soledge/blob/main/src/utils/ReentrancyGuard.sol)
 ///
-/// Note: This code utilizes the `TSTORE` and `TLOAD` opcodes.
-/// Ensure your chain is compatible with these.
+/// Note: This implementation utilizes the `TSTORE` and `TLOAD` opcodes.
+/// Please ensure that the chain you are deploying on supports them.
 abstract contract ReentrancyGuard {
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
     /*                       CUSTOM ERRORS                        */
@@ -19,7 +19,7 @@ abstract contract ReentrancyGuard {
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
 
     /// @dev Equivalent to: `uint72(bytes9(keccak256("_REENTRANCY_GUARD_SLOT")))`.
-    /// 9 bytes is large enough to avoid collisions with lower slots,
+    /// 9 bytes is large enough to avoid collisions in practice,
     /// but not too large to result in excessive bytecode bloat.
     uint256 private constant _REENTRANCY_GUARD_SLOT = 0x929eee149b4bd21268;
 
