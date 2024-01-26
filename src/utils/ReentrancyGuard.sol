@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 /// @notice Reentrancy guard mixin.
 /// @author Soledge (https://github.com/vectorized/soledge/blob/main/src/utils/ReentrancyGuard.sol)
@@ -31,16 +31,16 @@ abstract contract ReentrancyGuard {
     modifier nonReentrant() virtual {
         /// @solidity memory-safe-assembly
         assembly {
-            if eq(sload(_REENTRANCY_GUARD_SLOT), 2) {
+            if eq(tload(_REENTRANCY_GUARD_SLOT), 2) {
                 mstore(0x00, 0xab143c06) // `Reentrancy()`.
                 revert(0x1c, 0x04)
             }
-            sstore(_REENTRANCY_GUARD_SLOT, 2)
+            tstore(_REENTRANCY_GUARD_SLOT, 2)
         }
         _;
         /// @solidity memory-safe-assembly
         assembly {
-            sstore(_REENTRANCY_GUARD_SLOT, 1)
+            tstore(_REENTRANCY_GUARD_SLOT, 1)
         }
     }
 
@@ -48,7 +48,7 @@ abstract contract ReentrancyGuard {
     modifier nonReadReentrant() virtual {
         /// @solidity memory-safe-assembly
         assembly {
-            if eq(sload(_REENTRANCY_GUARD_SLOT), 2) {
+            if eq(tload(_REENTRANCY_GUARD_SLOT), 2) {
                 mstore(0x00, 0xab143c06) // `Reentrancy()`.
                 revert(0x1c, 0x04)
             }
