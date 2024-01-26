@@ -16,7 +16,7 @@ contract MockReentrancyGuard is ReentrancyGuard {
     function isReentrancyGuardLocked() public view returns (bool locked) {
         /// @solidity memory-safe-assembly
         assembly {
-            if eq(tload(_REENTRANCY_GUARD_SLOT), 1) { locked := true }
+            if tload(_REENTRANCY_GUARD_SLOT) { locked := true }
         }
     }
 
