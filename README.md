@@ -27,6 +27,7 @@ The Solidity smart contracts are located in the `src` directory.
 
 ```ml
 utils
+├─ LibT — "Transient storage helper"
 └─ ReentrancyGuard — "Reentrancy guard mixin"
 ```
 
