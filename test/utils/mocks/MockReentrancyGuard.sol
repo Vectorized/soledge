@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.24;
 
 import {ReentrancyGuard} from "../../../src/utils/ReentrancyGuard.sol";
 
@@ -16,7 +16,7 @@ contract MockReentrancyGuard is ReentrancyGuard {
     function isReentrancyGuardLocked() public view returns (bool locked) {
         /// @solidity memory-safe-assembly
         assembly {
-            if eq(sload(_REENTRANCY_GUARD_SLOT), 2) { locked := true }
+            if tload(_REENTRANCY_GUARD_SLOT) { locked := true }
         }
     }
 
