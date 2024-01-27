@@ -1,3 +1,5 @@
+LibTransientTest:testTransientSetAndGet(bytes32,uint256) (runs: 256, μ: 700, ~: 700)
+LibTransientTest:test__codesize() (gas: 1779)
 ReentrancyGuardTest:testRecursiveDirectUnguardedCall() (gas: 32203)
 ReentrancyGuardTest:testRecursiveIndirectUnguardedCall() (gas: 45600)
 ReentrancyGuardTest:testRevertGuardLocked() (gas: 31984)
