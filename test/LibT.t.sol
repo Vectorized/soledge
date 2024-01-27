@@ -10,6 +10,8 @@ contract LibTTest is SoladyTest {
             assertEq(LibT.get(s), bytes32(0));
             LibT.set(s, bytes32(i));
             assertEq(LibT.get(s), bytes32(i));
+            LibT.clear(s);
+            assertEq(LibT.get(s), bytes32(0));
         }
     }
 }

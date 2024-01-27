@@ -21,7 +21,7 @@ library LibT {
     }
 
     /// @dev Resets the value at `tSlot` in transient storage to zero.
-    function reset(bytes32 tSlot) internal {
+    function clear(bytes32 tSlot) internal {
         /// @solidity memory-safe-assembly
         assembly {
             tstore(tSlot, 0)
