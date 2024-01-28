@@ -1,9 +1,9 @@
-# Soledge
+# <img src="logo.svg" alt="soledge" height="70"/>
 
 [![NPM][npm-shield]][npm-url]
 [![CI][ci-shield]][ci-url]
 
-Solidity snippets too edgy to be in Solady. 
+Solidity snippets too edgy to be in [**Solady**](https://github.com/Vectorized/solady). 
 
 For a future of EVMs fragmentation, where the latest opcodes are not supported on most L2s for years even after their inception on mainnet.
 
