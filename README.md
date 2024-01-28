@@ -15,7 +15,7 @@ To install with [**Foundry**](https://github.com/gakonst/foundry):
 forge install vectorized/soledge
 ```
 
-To install with [**Hardhat**](https://github.com/nomiclabs/hardhat) or [**Truffle**](https://github.com/trufflesuite/truffle):
+To install with [**Hardhat**](https://github.com/nomiclabs/hardhat):
 
 ```sh
 npm install soledge
