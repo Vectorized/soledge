@@ -1,4 +1,4 @@
-# Soledge
+# <img src="logo.svg" alt="soledge" height="60"/>
 
 [![NPM][npm-shield]][npm-url]
 [![CI][ci-shield]][ci-url]
