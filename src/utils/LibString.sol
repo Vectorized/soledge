@@ -804,12 +804,9 @@ library LibString {
                     let element := mload(0x40)
                     let elementLength := sub(index, prevIndex)
                     mstore(element, elementLength)
-                    // Copy the `subject` one word at a time, backwards.
-                    for { let o := and(add(elementLength, 0x1f), w) } 1 {} {
-                        mstore(add(element, o), mload(add(add(subject, prevIndex), o)))
-                        o := add(o, w) // `sub(o, 0x20)`.
-                        if iszero(o) { break }
-                    }
+
+                    // Copy the `subject` string.
+                    mcopy(add(element, 0x20), add(add(subject, prevIndex), 0x20), elementLength)
 
                     // Zeroize the slot after the string.
                     mstore(add(add(element, 0x20), elementLength), 0)
