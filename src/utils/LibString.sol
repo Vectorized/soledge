@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 /// @notice Library for converting numbers into strings and other string operations.
 /// @author Solady (https://github.com/vectorized/solady/blob/main/src/utils/LibString.sol)
