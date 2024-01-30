@@ -4,11 +4,13 @@ pragma solidity ^0.8.20;
 /// @notice Library for converting numbers into strings and other string operations.
 /// @author Solady (https://github.com/vectorized/solady/blob/main/src/utils/LibString.sol)
 ///
-/// Note:
+/// Note: This implementation utilizes the `MCOPY` opcode.
+/// Please ensure that the chain you are deploying on supports them.
 /// For performance and bytecode compactness, most of the string operations are restricted to
 /// byte strings (7-bit ASCII), except where otherwise specified.
 /// Usage of byte string operations on charsets with runes spanning two or more bytes
 /// can lead to undefined behavior.
+
 library LibString {
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
     /*                        CUSTOM ERRORS                       */
