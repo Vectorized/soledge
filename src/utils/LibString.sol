@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.20;
 
 /// @notice Library for converting numbers into strings and other string operations.
 /// @author Solady (https://github.com/vectorized/solady/blob/main/src/utils/LibString.sol)
-/// @author Modified from Solmate (https://github.com/transmissions11/solmate/blob/main/src/utils/LibString.sol)
 ///
 /// Note:
 /// For performance and bytecode compactness, most of the string operations are restricted to
@@ -433,10 +432,13 @@ library LibString {
             result := add(mload(0x40), 0x20)
 
             let subjectEnd := add(subject, subjectLength)
+            // search <= original string
             if iszero(gt(searchLength, subjectLength)) {
+                // subjectSearchend = subjectEnd - searchLength
                 let subjectSearchEnd := add(sub(subjectEnd, searchLength), 1)
                 let h := 0
                 if iszero(lt(searchLength, 0x20)) { h := keccak256(search, searchLength) }
+                // 8 * searchLength
                 let m := shl(3, sub(0x20, and(searchLength, 0x1f)))
                 let s := mload(search)
                 for {} 1 {} {
@@ -453,12 +455,8 @@ library LibString {
                                 continue
                             }
                         }
-                        // Copy the `replacement` one word at a time.
-                        for { let o := 0 } 1 {} {
-                            mstore(add(result, o), mload(add(replacement, o)))
-                            o := add(o, 0x20)
-                            if iszero(lt(o, replacementLength)) { break }
-                        }
+                        // Copy the `replacement` string.
+                        mcopy(result, replacement, replacementLength)
                         result := add(result, replacementLength)
                         subject := add(subject, searchLength)
                         if searchLength {
@@ -472,16 +470,11 @@ library LibString {
                     if iszero(lt(subject, subjectSearchEnd)) { break }
                 }
             }
-
             let resultRemainder := result
             result := add(mload(0x40), 0x20)
             let k := add(sub(resultRemainder, result), sub(subjectEnd, subject))
-            // Copy the rest of the string one word at a time.
-            for {} lt(subject, subjectEnd) {} {
-                mstore(resultRemainder, mload(subject))
-                resultRemainder := add(resultRemainder, 0x20)
-                subject := add(subject, 0x20)
-            }
+            // Copy the rest of the string.
+            mcopy(resultRemainder, subject, subjectEnd)
             result := sub(result, 0x20)
             let last := add(add(result, 0x20), k) // Zeroize the slot after the string.
             mstore(last, 0)
@@ -675,12 +668,8 @@ library LibString {
                 result := mload(0x40)
                 let output := add(result, 0x20)
                 for {} 1 {} {
-                    // Copy the `subject` one word at a time.
-                    for { let o := 0 } 1 {} {
-                        mstore(add(output, o), mload(add(subject, o)))
-                        o := add(o, 0x20)
-                        if iszero(lt(o, subjectLength)) { break }
-                    }
+                    // Copy the `subject`.
+                    mcopy(output, subject, subjectLength)
                     output := add(output, subjectLength)
                     times := sub(times, 1)
                     if iszero(times) { break }
@@ -710,19 +699,13 @@ library LibString {
                 result := mload(0x40)
                 let resultLength := sub(end, start)
                 mstore(result, resultLength)
-                subject := add(subject, start)
-                let w := not(0x1f)
-                // Copy the `subject` one word at a time, backwards.
-                for { let o := and(add(resultLength, 0x1f), w) } 1 {} {
-                    mstore(add(result, o), mload(add(subject, o)))
-                    o := add(o, w) // `sub(o, 0x20)`.
-                    if iszero(o) { break }
-                }
+                // Copy the `subject` from `start` to `end`.
+                mcopy(add(result, 0x20), add(0x20, add(subject, start)), resultLength)
                 // Zeroize the slot after the string.
                 mstore(add(add(result, 0x20), resultLength), 0)
                 // Allocate memory for the length and the bytes,
                 // rounded up to a multiple of 32.
-                mstore(0x40, add(result, and(add(resultLength, 0x3f), w)))
+                mstore(0x40, add(result, and(add(resultLength, 0x3f), not(0x1f))))
             }
         }
     }
@@ -825,6 +808,7 @@ library LibString {
                         o := add(o, w) // `sub(o, 0x20)`.
                         if iszero(o) { break }
                     }
+
                     // Zeroize the slot after the string.
                     mstore(add(add(element, 0x20), elementLength), 0)
                     // Allocate memory for the length and the bytes,
@@ -854,32 +838,24 @@ library LibString {
     {
         /// @solidity memory-safe-assembly
         assembly {
-            let w := not(0x1f)
             result := mload(0x40)
+            let o := add(result, 0x20)
             let aLength := mload(a)
-            // Copy `a` one word at a time, backwards.
-            for { let o := and(add(aLength, 0x20), w) } 1 {} {
-                mstore(add(result, o), mload(add(a, o)))
-                o := add(o, w) // `sub(o, 0x20)`.
-                if iszero(o) { break }
-            }
             let bLength := mload(b)
-            let output := add(result, aLength)
-            // Copy `b` one word at a time, backwards.
-            for { let o := and(add(bLength, 0x20), w) } 1 {} {
-                mstore(add(output, o), mload(add(b, o)))
-                o := add(o, w) // `sub(o, 0x20)`.
-                if iszero(o) { break }
-            }
-            let totalLength := add(aLength, bLength)
-            let last := add(add(result, 0x20), totalLength)
+            // copy `a` string into result.
+            mcopy(o, add(a, 0x20), aLength)
+            o := add(o, aLength)
+            // copy `b` string into result.
+            mcopy(o, add(b, 0x20), bLength)
+
+            // Stores the length.
+            mstore(result, add(aLength, bLength))
+            let last := add(o, bLength)
             // Zeroize the slot after the string.
             mstore(last, 0)
-            // Stores the length.
-            mstore(result, totalLength)
             // Allocate memory for the length and the bytes,
             // rounded up to a multiple of 32.
-            mstore(0x40, and(add(last, 0x1f), w))
+            mstore(0x40, and(add(last, 0x1f), not(0x1f)))
         }
     }
 
