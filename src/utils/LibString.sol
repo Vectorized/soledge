@@ -4,13 +4,13 @@ pragma solidity ^0.8.24;
 /// @notice Library for converting numbers into strings and other string operations.
 /// @author Solady (https://github.com/vectorized/solady/blob/main/src/utils/LibString.sol)
 ///
-/// Note: This implementation utilizes the `MCOPY` opcode.
+/// @dev Note: This implementation utilizes the `MCOPY` opcode.
 /// Please ensure that the chain you are deploying on supports them.
+///
 /// For performance and bytecode compactness, most of the string operations are restricted to
 /// byte strings (7-bit ASCII), except where otherwise specified.
 /// Usage of byte string operations on charsets with runes spanning two or more bytes
 /// can lead to undefined behavior.
-
 library LibString {
     /*«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-*/
     /*                        CUSTOM ERRORS                       */
@@ -804,10 +804,8 @@ library LibString {
                     let element := mload(0x40)
                     let elementLength := sub(index, prevIndex)
                     mstore(element, elementLength)
-
                     // Copy the `subject` string.
                     mcopy(add(element, 0x20), add(add(subject, prevIndex), 0x20), elementLength)
-
                     // Zeroize the slot after the string.
                     mstore(add(add(element, 0x20), elementLength), 0)
                     // Allocate memory for the length and the bytes,
@@ -841,12 +839,11 @@ library LibString {
             let o := add(result, 0x20)
             let aLength := mload(a)
             let bLength := mload(b)
-            // copy `a` string into result.
+            // Copy `a` into `result`.
             mcopy(o, add(a, 0x20), aLength)
             o := add(o, aLength)
-            // copy `b` string into result.
+            // Copy `b` into `result`.
             mcopy(o, add(b, 0x20), bLength)
-
             // Stores the length.
             mstore(result, add(aLength, bLength))
             let last := add(o, bLength)

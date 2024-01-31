@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 /// @notice Reentrancy guard mixin.
 /// @author Soledge (https://github.com/vectorized/soledge/blob/main/src/utils/ReentrancyGuard.sol)
 ///
-/// Note: This implementation utilizes the `TSTORE` and `TLOAD` opcodes.
+/// @dev Note: This implementation utilizes the `TSTORE` and `TLOAD` opcodes.
 /// Please ensure that the chain you are deploying on supports them.
 abstract contract ReentrancyGuard {
     /*«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-«-*/
