@@ -804,10 +804,8 @@ library LibString {
                     let element := mload(0x40)
                     let elementLength := sub(index, prevIndex)
                     mstore(element, elementLength)
-
                     // Copy the `subject` string.
                     mcopy(add(element, 0x20), add(add(subject, prevIndex), 0x20), elementLength)
-
                     // Zeroize the slot after the string.
                     mstore(add(add(element, 0x20), elementLength), 0)
                     // Allocate memory for the length and the bytes,
@@ -841,12 +839,11 @@ library LibString {
             let o := add(result, 0x20)
             let aLength := mload(a)
             let bLength := mload(b)
-            // copy `a` string into result.
+            // Copy `a` into `result`.
             mcopy(o, add(a, 0x20), aLength)
             o := add(o, aLength)
-            // copy `b` string into result.
+            // Copy `b` into `result`.
             mcopy(o, add(b, 0x20), bLength)
-
             // Stores the length.
             mstore(result, add(aLength, bLength))
             let last := add(o, bLength)
