@@ -3,6 +3,9 @@
   "license": "MIT",
   "version": "0.0.5",
   "description": "Edgelord Solidity snippets.",
+  "scripts": {
+    "powerup": "node scripts/powerup.js"
+  },
   "files": [
     "src/**/*.sol"
   ],
