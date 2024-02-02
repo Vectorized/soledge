@@ -39,7 +39,6 @@ async function showUpdates(updates) {
   updates = updates.map((update) => ({
     "Update type": update.scope,
     File: update.file,
-    // wrap to 100 chars
     "Current value": truncate(update.from),
     "Proposed change": truncate(update.to),
   }));

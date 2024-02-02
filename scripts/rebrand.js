@@ -39,7 +39,7 @@ async function rebrand() {
   if (updates.length > 0) {
     showUpdates(updates);
     const confirmation = await getUserConfirmation(
-      "Do you apply these proposed rebranding (all occurances)?"
+      "Confirm applying the proposed branding updates?"
     );
     if (confirmation) applyUpdates(updates);
   } else {

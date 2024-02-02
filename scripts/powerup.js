@@ -33,12 +33,12 @@ async function powerup() {
   if (updates.length > 0) {
     showUpdates(updates);
     const confirmation = await getUserConfirmation(
-      "Do you want to upgrade these file(s) to the latest version?"
+      "Do you want to upgrade these file(s) to the latest Solidity version?"
     );
     if (confirmation) applyUpdates(updates);
   } else {
     console.log(
-      `🎉 soledge is on the latest Solidity version (${LATEST_SOLIDITY_VERSION})!`
+      `🎉 All files are already on the latest Solidity version (${LATEST_SOLIDITY_VERSION})!`
     );
   }
 }
