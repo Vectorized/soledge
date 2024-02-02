@@ -4,7 +4,8 @@
   "version": "0.0.5",
   "description": "Edgelord Solidity snippets.",
   "scripts": {
-    "powerup": "node scripts/powerup.js"
+    "powerup": "node scripts/powerup.js",
+    "rebrand": "node scripts/rebrand.js"
   },
   "files": [
     "src/**/*.sol"
