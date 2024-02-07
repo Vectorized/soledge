@@ -169,17 +169,17 @@ async function rebrand(fileOrDir = SRC_DIR) {
 
     function fileContainsPattern(filePath, pattern) {
         const content = fs.readFileSync(filePath, "utf-8");
-      
+
         // Escape regex special characters from pattern
         pattern = pattern.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-      
+
         // Use the escaped pattern in the regex match
         const regex = new RegExp(pattern);
-      
+
         // Check if the content matches the pattern
         return regex.test(content);
-      }
-      
+    }
+
 }
 
 function updateSolcVersion(version) {
@@ -199,11 +199,10 @@ else if (command === "--rebrand") {
     rebrand(fileOrDir);
 }
 else {
-    console.error("Invalid command.\n");
-    console.log("Usage: node ladytoedge.js <command> <filename|folderpath>");
+    console.error("Invalid command.");
+    console.log("Usage: node script.js <command> <filename|folderpath>");
     console.log("Available commands:");
-    console.log("--rebrand <filename|folderpath>");
-    console.log("--powerup <filename|folderpath> --solc <solidity version>");
+    console.log("--rebrand <filename|folderpath> (default: src/");
+    console.log("--powerup <filename|folderpath> (default: src/) --solc <solidity version> (default: 0.8.24)");
     process.exit(1);
-
 }
